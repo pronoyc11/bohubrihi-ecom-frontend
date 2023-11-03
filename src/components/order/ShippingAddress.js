@@ -35,11 +35,11 @@ const ShippingAddress = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setDisabled(true);
-    console.log(values)
+  
     updateProfile(userInfo().token, values)
       .then((response) => {
         if (response.status === 200) {
-          alert("Successfully updated profile");
+        
           setRedirect(true);
         }
       })

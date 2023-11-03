@@ -3,6 +3,7 @@ import { getCartItems, getProfile } from "../../api/apiOrder";
 import { userInfo } from "../../utils/auth";
 import Layout from "../Layout";
 import { Link } from "react-router-dom";
+import { getCoupon } from "../../api/apiCoupon";
 
 const Checkout = () => {
   const [orderItems, setOrderItems] = useState([]);
@@ -14,6 +15,9 @@ const Checkout = () => {
     postcode: "",
     country: "",
   });
+  const [coupon,setCoupon] = useState('');
+  const [couponValue,setCouponValue] = useState(1);
+  const [couponMsg,setCouponMsg] = useState(null);
 
   const { phone, address1, address2, city, postcode, country } = values;
 
@@ -32,10 +36,30 @@ const Checkout = () => {
 
   const getOrderTotal = () => {
     const arr = orderItems.map((cartItem) => cartItem.price * cartItem.count);
-    const sum = arr.reduce((a, b) => a + b, 0);
+    let sum = arr.reduce((a, b) => a + b, 0);
+  if(couponValue!== 1){
+    let discount = Math.round(sum * (couponValue/100));
+    sum = sum - discount ;
+  }
+
     return sum;
   };
-
+const handleChange = (e) =>{
+setCoupon(e.target.value);
+}
+const handleSubmit =  (e) =>{
+  e.preventDefault();
+  getCoupon(coupon).then(response=>{
+    if(response.status === 200){
+      setCouponValue(response.data.discount);
+      setCouponMsg(null);
+    }
+  }).catch(error=>{
+    if(error.response){
+      setCouponMsg(error.response.data);
+    }
+  })
+}
   const shippinDetails = () => (
     <>
       To,
@@ -63,17 +87,17 @@ const Checkout = () => {
           className="container"
         >
           <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item">
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item">
                 <Link href="#">Order</Link>
               </li>
-              <li class="breadcrumb-item">
+              <li className="breadcrumb-item">
                 <Link href="#">Cart</Link>
               </li>
-              <li class="breadcrumb-item">
+              <li className="breadcrumb-item">
                 <Link href="#">Shipping Address</Link>
               </li>
-              <li class="breadcrumb-item active" aria-current="page">
+              <li className="breadcrumb-item active" aria-current="page">
                 Checkout
               </li>
             </ol>
@@ -111,9 +135,28 @@ const Checkout = () => {
                     </span>
                   </div>
                 </div>
+               
+                {couponMsg &&  <><br /><div className="alert alert-danger">{couponMsg}</div></>}
+             
+                <form onSubmit={e=>handleSubmit(e)} className="form-inline">
+                <input
+            name="coupon"
+            value={coupon}
+            placeholder="Type coupon name"
+            className="form-control mr-sm-2"
+            onChange={e=>handleChange(e)}
+           
+          />
+          <button
+            type="submit"
+            className="btn btn-outline-primary btn-md my-2 my-sm-0"
+          >
+          Apply coupon
+          </button>
+                </form>
                 <br />
                 <p>
-                  <Link className="btn btn-warning btn-md" to="/payment">
+                  <Link className="btn btn-warning btn-md float-right" to="/payment" state={{couponValue:couponValue}}>
                     Make Payment
                   </Link>
                 </p>

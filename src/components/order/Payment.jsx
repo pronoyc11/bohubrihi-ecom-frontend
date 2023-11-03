@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { initPayment } from "../../api/apiOrder";
 import { userInfo } from "../../utils/auth";
-const Payment = () => {
+
+const Payment = (props) => {
   const [sessionSuccess, setSessionSuccess] = useState(false);
   const [failed, setFailed] = useState(false);
   const [redirectUrl, setRedirectUrl] = useState("");
-
+  const location = useLocation();
+  let {couponValue} = location.state ;
+ 
   useEffect(() => {
-    initPayment(userInfo().token)
+    initPayment(userInfo().token,couponValue)
       .then((response) => {
         if (response.data.status === "SUCCESS") {
           setSessionSuccess(true);

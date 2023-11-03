@@ -5,7 +5,7 @@ const Radiobox = ({ prices, handleFilter }) => {
 
     const handleChange = (e)=>{
        handleFilter(e.target.value);
-       
+     
     }
 
 

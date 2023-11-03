@@ -50,10 +50,24 @@ export const updateProfile = (token,profile) =>{
     })
 }
 
-export const initPayment = token =>{
-    return axios.get(`${API}/payment`,{
+export const initPayment = (token,coupon) =>{
+    return axios.get(`${API}/payment?discount=${coupon}`,{
         headers:{
             "Authorization":`Bearer ${token}`
+        }
+    })
+}
+export const getOrders = token =>{
+    return axios.get(`${API}/orders`,{
+        headers:{
+            'Authorization': `Bearer ${token}`
+        }
+    })
+}
+export const deletetOrders = (token,orderId) =>{
+    return axios.delete(`${API}/orders?orderId=${orderId}`,{
+        headers:{
+            'Authorization': `Bearer ${token}`
         }
     })
 }

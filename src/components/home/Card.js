@@ -37,6 +37,8 @@ const Card = ({ product, handleAddToCart }) => {
             ) : (
               <span className="badge badge-pill badge-danger">Out of Stock</span>
             )}
+            <span className="badge badge-pill badge-info ml-1">Ratings:{product.totalRating}</span>
+            <span className="badge badge-pill badge-warning ml-1">Sold:{product.sold}</span>
           </p>
           <Link to={`/product/${product._id}`}>
             <button className="btn btn-outline-warning btn-sm">

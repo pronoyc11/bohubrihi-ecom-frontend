@@ -1,9 +1,36 @@
 import Layout from "../Layout";
 import { Link } from "react-router-dom";
 import { userInfo } from "../../utils/auth";
+import ShowPurchaseHistory from "./ShowPurchaseHistory";
+import { useEffect, useState } from "react";
+import { deletetOrders, getOrders } from "../../api/apiOrder";
 
 const Dashboard = () => {
   const { name, email, role } = userInfo();
+const [orders,setOrders] = useState([]);
+const loadOrderHistory = () =>{
+  getOrders(userInfo().token).then(
+    response =>{
+      if(response.status === 200){
+        setOrders(response.data)
+      }
+    }
+    ).catch(error=>{
+      console.log(error)
+    })
+}
+  useEffect(()=>{
+loadOrderHistory();
+  },[])
+
+  const handleDeleteOrder = (ids) =>{
+
+   if(!window.confirm("Clear the purchase history?")) return ;
+   deletetOrders(userInfo().token,ids)
+   .then(response => loadOrderHistory())
+   .catch(err => alert(err))
+  }
+
   const UserLinks = () => {
     return (
       <div className="card">
@@ -28,7 +55,9 @@ const Dashboard = () => {
     <div className="card mb-5">
       <h3 className="card-header">Purchase History</h3>
       <ul className="list-group">
-        <li className="list-group-item">History</li>
+     {orders.length===0?<li className="list-group-item">No order history is available</li>:orders.map(order=>{
+      return  <ShowPurchaseHistory order={order} handleDeleteOrder={handleDeleteOrder} key={order._id} />
+     })}
       </ul>
     </div>
   );
