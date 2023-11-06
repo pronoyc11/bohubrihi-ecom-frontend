@@ -15,6 +15,8 @@ import { isAuthenticated, userInfo } from "../../utils/auth";
 import { addToCart } from "../../api/apiOrder";
 import Dropdown from "./Dropdown";
 import DropdownSortBy from "./DropdownSortBy";
+import axios from "axios";
+import { API } from "../../utils/config";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -39,6 +41,10 @@ const Home = () => {
     getCategories()
       .then((response) => setCategories(response.data))
       .catch((err) => setError("Failed to load categories!"));
+
+      // axios.get(`${API}/auth/google/success`)
+      //      .then(res => console.log(res))
+      //      .catch(err=>console.log(err));
   }, []);
 
   //HANDELING THE FILTERS START

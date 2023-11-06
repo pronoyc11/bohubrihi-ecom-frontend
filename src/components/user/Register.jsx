@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import Layout from '../Layout';
-import { register } from '../../api/apiAuth';
+import { loginWithGoogle, register } from '../../api/apiAuth';
 import { showErrors, showLoading } from '../../utils/messages';
 import { Link, Navigate } from 'react-router-dom';
-import { isAuthenticated } from '../../utils/auth';
-
+import { authenticate, isAuthenticated } from '../../utils/auth';
+import { API } from '../../utils/config';
+import classes from "./social.module.css";
+import { GoogleLogin } from '@react-oauth/google';
+import jwt_decode from "jwt-decode";
+import FacebookLogin from '@greatsumini/react-facebook-login';
 const Register = () => {
     const [values, setValues] = useState({
         name: '',
@@ -95,6 +99,86 @@ const showSuccess = () =>{
             <hr />
             {signUpForm()}
             <hr />
+            <p className={classes.or}>Or,</p>
+            <div class={classes.container}>
+            <GoogleLogin
+          onSuccess={credentialResponse => {
+         const userData = jwt_decode(credentialResponse.credential);
+         if(userData.email_verified){
+          const sendAbleData = {
+            name:userData.name,
+            email:userData.email,
+            password:"googlePassword"
+           }
+   loginWithGoogle(sendAbleData)
+                  .then(response=>{
+                    authenticate(response.data.token,()=>{
+                      setValues({
+                        name: "",
+                        email: "",
+                        password: "",
+                        error: false,
+                        loading: false,
+                        disabled: false,
+                        success: true,
+                        redirect: true,
+                      });
+                    })
+                  })
+                  .catch(err=>{
+                    let errorMsg = "Something went wrong!";
+                    if (err.response) {
+                      errorMsg = err.response.data;
+                    }
+                    setValues({
+                      ...values,
+                      error: errorMsg,
+                      loading: false,
+                      disabled: false,
+                    });
+                  
+
+                  })
+
+
+         }else{
+          let errorMsg = "Something went wrong!";
+          setValues({
+            ...values,
+            error: errorMsg,
+            loading: false,
+            disabled: false,
+          });
+         }
+ 
+          }}
+          onError={(err) => {
+            let errorMsg = "Something went wrong!";
+            setValues({
+              ...values,
+              error: errorMsg,
+              loading: false,
+              disabled: false,
+            });
+          
+          }}
+        />
+       <FacebookLogin
+  appId="371739821857690"
+  loginOptions={{
+    return_scopes: false,
+  }}
+  onSuccess={(response) => {
+    console.log('Login Success!', response);
+  }}
+  onFail={(error) => {
+    console.log('Login Failed!', error);
+  }}
+  onProfileSuccess={(response) => {
+    console.log('Get Profile Success!', response);
+  }}
+/>
+    </div>
         </Layout>
     );
 }

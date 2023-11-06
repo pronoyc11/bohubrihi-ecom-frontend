@@ -1,0 +1,49 @@
+.googleBtn {
+  text-align: center;
+  padding:1rem;
+}
+
+.googleBtnWrapper {
+   
+}
+
+.googleIcon {
+
+}
+.or{
+    text-align: center;
+    margin:1.5rem 0 ;
+    font-weight: 500;
+}
+.googleIconfb {
+width:1.5rem;
+height:1.5rem;
+}
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap:1rem;
+    margin-bottom:2rem;
+}
+.btnText {
+    padding:0.5rem;
+    transition: 0.5s;
+    margin: 11px 11px 0 0;
+    text-decoration: none;
+    font-size: 14px;
+    letter-spacing: 0.2px;
+    font-family: "Roboto";
+}
+
+.btnText:hover {
+    box-shadow: 0 0 6px #4285f4;
+    
+
+}
+
+.btnText:active {
+    background: #1669f2;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:500);

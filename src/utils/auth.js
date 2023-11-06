@@ -1,5 +1,5 @@
 import jwt_decode from "jwt-decode";
-
+import { googleLogout } from '@react-oauth/google';
 export const authenticate = (token,cb) =>{
     if(typeof window !== "undefined"){
         localStorage.setItem("jwt",JSON.stringify(token));
@@ -31,6 +31,7 @@ export const userInfo = () =>{
 }
 export const signout = cb =>{
     if(typeof window !== "undefined"){
+        googleLogout();
         localStorage.removeItem("jwt");
         cb();
     } 

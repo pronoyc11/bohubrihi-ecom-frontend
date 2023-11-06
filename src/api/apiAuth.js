@@ -15,3 +15,10 @@ export const login = (user)=>{
         }
     })
 }
+export const loginWithGoogle = (user)=>{
+    return axios.post(`${API}/user/google/signIn`,user,{
+        headers:{
+            "Content-Type":"application/json"
+        }
+    })
+}
