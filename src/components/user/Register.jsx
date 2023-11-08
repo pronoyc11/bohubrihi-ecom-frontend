@@ -8,7 +8,9 @@ import { API } from '../../utils/config';
 import classes from "./social.module.css";
 import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from "jwt-decode";
-import FacebookLogin from '@greatsumini/react-facebook-login';
+import { FacebookProvider, LoginButton } from 'react-facebook';
+import axios from 'axios';
+
 const Register = () => {
     const [values, setValues] = useState({
         name: '',
@@ -89,6 +91,27 @@ const showSuccess = () =>{
         New account created.Please <Link to="/login" >Log in</Link>.
     </div>
 }
+
+async function handleSuccess(response) {
+  try {
+    var result = await axios.post(`${API}/auth/facebook`, {
+      userId: response.authResponse.userID,
+      accessToken: response.authResponse.accessToken
+    })
+    console.log(result.data); 
+  } catch (error) {
+    console.log(error);     }
+}
+
+function handleError(error) {
+  console.log(error);
+}
+
+
+
+
+
+
     return (
         <Layout title="Register" className="container col-md-8 offset-md-2">
         {isAuthenticated() && <Navigate to="/" />}
@@ -163,7 +186,7 @@ const showSuccess = () =>{
           
           }}
         />
-       <FacebookLogin
+       {/* <FacebookLogin
   appId="371739821857690"
   loginOptions={{
     return_scopes: false,
@@ -177,7 +200,16 @@ const showSuccess = () =>{
   onProfileSuccess={(response) => {
     console.log('Get Profile Success!', response);
   }}
-/>
+/> */}
+ <FacebookProvider appId="371739821857690">
+        <LoginButton
+          scope="email"
+          onError={handleError}
+          onSuccess={handleSuccess}
+        >
+          Login via Facebook
+        </LoginButton>
+      </FacebookProvider>
     </div>
         </Layout>
     );

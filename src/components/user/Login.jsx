@@ -6,8 +6,9 @@ import { Navigate, useNavigate } from "react-router";
 import { authenticate, isAuthenticated } from "../../utils/auth";
 import classes from "./social.module.css";
 import { API } from "../../utils/config";
+import { FacebookProvider, LoginButton } from 'react-facebook';
 import axios from "axios";
-import FacebookLogin from '@greatsumini/react-facebook-login';
+
 import jwt_decode from "jwt-decode";
 
 import { GoogleLogin } from "@react-oauth/google";
@@ -215,10 +216,10 @@ const Login = () => {
     onFailure={responseGoogle}
     cookiePolicy={'single_host_origin'}
   /> */}
-<FacebookLogin
+{/* <FacebookLogin
   appId="371739821857690"
   loginOptions={{
-    return_scopes: false,
+    return_scopes: true,
   }}
   onSuccess={(response) => {
     console.log('Login Success!', response);
@@ -229,7 +230,7 @@ const Login = () => {
   onProfileSuccess={(response) => {
     console.log('Get Profile Success!', response);
   }}
-/>
+/> */}
 
     </div>
     </Layout>
