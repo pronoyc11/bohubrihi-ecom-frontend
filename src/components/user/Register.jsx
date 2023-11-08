@@ -94,6 +94,7 @@ const showSuccess = () =>{
 
 async function handleSuccess(response) {
   try {
+    console.log(response)
     var result = await axios.post(`${API}/auth/facebook`, {
       userId: response.authResponse.userID,
       accessToken: response.authResponse.accessToken
