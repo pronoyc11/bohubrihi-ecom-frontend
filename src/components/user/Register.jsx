@@ -94,14 +94,28 @@ const showSuccess = () =>{
 
 async function handleSuccess(response) {
   try {
-    console.log(response)
+ 
     var result = await axios.post(`${API}/auth/facebook`, {
       userId: response.authResponse.userID,
       accessToken: response.authResponse.accessToken
     })
-    console.log(result.data); 
+    authenticate(result.data.token,()=>{
+      setValues({
+        name: "",
+        email: "",
+        password: "",
+        error: false,
+        loading: false,
+        disabled: false,
+        success: true,
+        // redirect: true,
+      });
+    }); 
   } catch (error) {
-    console.log(error);     }
+    let errorMsg = "Something went wrong!"
+    if(error.response){
+        errorMsg = error.response.data ;
+    }    }
 }
 
 function handleError(error) {
@@ -145,7 +159,7 @@ function handleError(error) {
                         loading: false,
                         disabled: false,
                         success: true,
-                        redirect: true,
+                        // redirect: true,
                       });
                     })
                   })
