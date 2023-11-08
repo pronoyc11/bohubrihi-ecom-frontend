@@ -203,7 +203,6 @@ function handleError(error) {
 /> */}
  <FacebookProvider appId="371739821857690">
         <LoginButton
-          scope="email"
           onError={handleError}
           onSuccess={handleSuccess}
         >
