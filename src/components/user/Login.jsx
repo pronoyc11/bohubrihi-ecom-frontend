@@ -108,10 +108,10 @@ const Login = () => {
   );
   const navigateUser = () => {
     if (redirect){
-      return <Navigate to="/" />
+      return <Navigate to="/" replace={true} />
     }
     if(isAuthenticated()){
-      return <Navigate to="/" />
+      return <Navigate to="/" replace={true} />
     }
   };
 
@@ -186,16 +186,6 @@ const Login = () => {
       <hr />
       <p className={classes.or}>Or,</p>
             <div className={classes.container}>
-
-        {/* <a href={`${API}/auth/facebook`} style={{textDecoration:"none"}}>
-        <div className={classes.googleBtn}>
-                <div className={classes.gooleBtnWrapper}>
-                    <img className={classes.googleIconfb}
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Facebook_icon_2013.svg/300px-Facebook_icon_2013.svg.png" />
-                </div>
-                <p className={classes.btnText}><b>Sign in with facebook</b></p>
-            </div>
-        </a> */}
         <GoogleLogin
           onSuccess={credentialResponse => {
          const userData = jwt_decode(credentialResponse.credential);
@@ -258,28 +248,7 @@ const Login = () => {
           
           }}
         />
-         {/* <GoogleLogin
-    clientId={process.env.REACT_APP_GOOGLE_API_TOKEN}
-    buttonText="Login"
-    onSuccess={responseGoogle}
-    onFailure={responseGoogle}
-    cookiePolicy={'single_host_origin'}
-  /> */}
-{/* <FacebookLogin
-  appId="371739821857690"
-  loginOptions={{
-    return_scopes: true,
-  }}
-  onSuccess={(response) => {
-    console.log('Login Success!', response);
-  }}
-  onFail={(error) => {
-    console.log('Login Failed!', error);
-  }}
-  onProfileSuccess={(response) => {
-    console.log('Get Profile Success!', response);
-  }}
-/> */}
+
  <FacebookProvider appId="371739821857690">
         <LoginButton
           className={fbclasses.fbStyle}

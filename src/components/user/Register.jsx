@@ -130,7 +130,7 @@ function handleError(error) {
 
     return (
         <Layout title="Register" className="container col-md-8 offset-md-2">
-        {isAuthenticated() && <Navigate to="/" />}
+        {isAuthenticated() && <Navigate to="/" replace={true} />}
         {showSuccess()}
         {showLoading(loading)}
         {showErrors(error,error)}
