@@ -8,6 +8,7 @@ import classes from "./social.module.css";
 import { API } from "../../utils/config";
 import { FacebookProvider, LoginButton } from 'react-facebook';
 import axios from "axios";
+import fbclasses from "./Facebook.module.css";
 
 import jwt_decode from "jwt-decode";
 
@@ -126,6 +127,54 @@ const Login = () => {
   const responseGoogle = (response) => {
     console.log(response);
   }
+
+
+
+  async function handleSuccess(response) {
+    try {
+   
+      var result = await axios.post(`${API}/auth/facebook`, {
+        userId: response.authResponse.userID,
+        accessToken: response.authResponse.accessToken
+      })
+      authenticate(result.data.token,()=>{
+        setValues({
+          name: "",
+          email: "",
+          password: "",
+          error: false,
+          loading: false,
+          disabled: false,
+          success: true,
+         redirect: true,
+        });
+      }); 
+    } catch (error) {
+      let errorMsg = "Something went wrong!"
+      if(error.response){
+          errorMsg = error.response.data ;
+      }
+      setValues({
+        ...values,
+        error: errorMsg,
+        loading: false,
+        disabled: false,
+      }) 
+    
+    
+    }
+  }
+  
+  function handleError(error) {
+    console.log(error);
+    setValues({
+      ...values,
+      error: "Fb is not initialized!",
+      loading: false,
+      disabled: false,
+    }) 
+  }
+  
   return (
     <Layout title="Login" className="container col-md-8 offset-md-2">
       {navigateUser()}
@@ -231,6 +280,15 @@ const Login = () => {
     console.log('Get Profile Success!', response);
   }}
 /> */}
+ <FacebookProvider appId="371739821857690">
+        <LoginButton
+          className={fbclasses.fbStyle}
+          onError={handleError}
+          onSuccess={handleSuccess}
+        >
+          Login via Facebook
+        </LoginButton>
+      </FacebookProvider>
 
     </div>
     </Layout>

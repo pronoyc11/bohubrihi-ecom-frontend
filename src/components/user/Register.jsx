@@ -6,6 +6,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { authenticate, isAuthenticated } from '../../utils/auth';
 import { API } from '../../utils/config';
 import classes from "./social.module.css";
+import fbclasses from "./Facebook.module.css";
 import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from "jwt-decode";
 import { FacebookProvider, LoginButton } from 'react-facebook';
@@ -218,6 +219,7 @@ function handleError(error) {
 /> */}
  <FacebookProvider appId="371739821857690">
         <LoginButton
+          className={fbclasses.fbStyle}
           onError={handleError}
           onSuccess={handleSuccess}
         >
