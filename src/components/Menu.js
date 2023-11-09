@@ -69,7 +69,7 @@ const Menu = (props) => {
                 style={{ color: "grey", cursor: "pointer" }}
                 onClick={() => {
                   signout(() => {
-                    navigate("/login");
+                    navigate("/register", { replace: true });
                   });
                 }}
               >
