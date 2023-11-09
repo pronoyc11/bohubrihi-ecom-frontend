@@ -132,7 +132,7 @@ const Login = () => {
 
   async function handleSuccess(response) {
     try {
-   
+     console.log(response);
       var result = await axios.post(`${API}/auth/facebook`, {
         userId: response.authResponse.userID,
         accessToken: response.authResponse.accessToken
@@ -251,7 +251,7 @@ const Login = () => {
 
  <FacebookProvider appId="371739821857690">
         <LoginButton
-          className={fbclasses.fbStyle}
+        
           onError={handleError}
           onSuccess={handleSuccess}
         >
